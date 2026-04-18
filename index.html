@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FinTrack</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- LANDING -->
+<div id="landingPage" class="page active">
+  <div class="landing">
+    <nav class="nav">
+      <div class="logo">FinTrack</div>
+      <div class="nav-btns">
+        <button class="btn btn-ghost" onclick="showAuth('login')">Connexion</button>
+        <button class="btn btn-primary" onclick="showAuth('signup')">Commencer gratuitement</button>
+      </div>
+    </nav>
+    <div class="hero">
+      <div class="hero-badge">✨ Gérez vos finances intelligemment</div>
+      <h1>Comprenez où va<br><span>votre argent</span></h1>
+      <p>Analyses financières belles et simples. Fini les feuilles Excel compliquées. Voyez en un coup d'œil si vous dépensez moins que vous ne gagnez.</p>
+      <div class="hero-btns">
+        <button class="btn btn-primary btn-large" onclick="showAuth('signup')">Créer mon compte</button>
+        <button class="btn btn-ghost btn-large" onclick="showAuth('login')">Se connecter</button>
+      </div>
+    </div>
+    <div class="features">
+      <div style="text-align:center;margin-bottom:48px">
+        <div class="section-label">Fonctionnalités</div>
+        <div class="section-title">Tout ce dont vous avez besoin</div>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card"><div class="feature-icon" style="background:rgba(108,92,231,0.15)">📊</div><h3>Graphiques magnifiques</h3><p>Analysez vos finances avec des visualisations claires et intuitives. Comprenez vos habitudes en un clin d'œil.</p></div>
+        <div class="feature-card"><div class="feature-icon" style="background:rgba(0,184,148,0.15)">💰</div><h3>Suivi revenu / dépenses</h3><p>Voyez instantanément si vous dépensez moins que vous gagnez. Tout en un seul endroit, en un seul clic.</p></div>
+        <div class="feature-card"><div class="feature-icon" style="background:rgba(253,203,110,0.15)">🔔</div><h3>Alertes intelligentes</h3><p>Soyez alerté quand vous approchez de vos limites de budget. Restez toujours en contrôle de vos dépenses.</p></div>
+        <div class="feature-card"><div class="feature-icon" style="background:rgba(253,121,168,0.15)">🏆</div><h3>Système de trophées</h3><p>Gagnez des points et des trophées en respectant vos budgets. La gestion financière devient un jeu.</p></div>
+        <div class="feature-card"><div class="feature-icon" style="background:rgba(162,155,254,0.15)">🌍</div><h3>Multi-devises</h3><p>Travaillez en MAD, EUR, USD ou GBP. Gérez vos finances dans la devise de votre choix.</p></div>
+        <div class="feature-card"><div class="feature-icon" style="background:rgba(214,48,49,0.15)">🔮</div><h3>Prédictions intelligentes</h3><p>FinTrack prédit vos dépenses futures basé sur vos habitudes. Anticipez avant de dépenser.</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- AUTH -->
+<div id="authPage" class="page">
+  <div class="auth-page">
+    <div class="auth-card">
+      <span class="logo">FinTrack</span>
+      <h2 id="authTitle">Bon retour 👋</h2>
+      <p class="subtitle" id="authSubtitle">Connectez-vous à votre compte</p>
+      <div id="signupExtra" class="hidden">
+        <div class="form-group"><label>NOM COMPLET</label><input type="text" id="fullName" placeholder="Ahmed Benali"></div>
+      </div>
+      <div class="form-group"><label>EMAIL</label><input type="email" id="authEmail" placeholder="vous@email.com"></div>
+      <div class="form-group"><label>MOT DE PASSE</label><input type="password" id="authPassword" placeholder="••••••••"></div>
+      <button class="btn btn-primary btn-full" onclick="doAuth()" id="authBtn">Se connecter</button>
+      <div class="auth-switch" id="authSwitch">Pas encore de compte ? <a onclick="toggleAuth()">S'inscrire</a></div>
+    </div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="appPage" class="page">
+  <div class="app-layout">
+    <div class="sidebar">
+      <div class="logo">FinTrack</div>
+      <button class="nav-item active" onclick="showMain('dashboard')" id="nav-dashboard"><span class="icon">🏠</span>Tableau de bord</button>
+      <button class="nav-item" onclick="showMain('expenses')" id="nav-expenses"><span class="icon">💸</span>Dépenses</button>
+      <button class="nav-item" onclick="showMain('budget')" id="nav-budget"><span class="icon">🎯</span>Budget</button>
+      <button class="nav-item" onclick="showMain('analytics')" id="nav-analytics"><span class="icon">📈</span>Analyses</button>
+      <button class="nav-item" onclick="showMain('savings')" id="nav-savings"><span class="icon">🏦</span>Épargne</button>
+      <button class="nav-item" onclick="showMain('trophies')" id="nav-trophies"><span class="icon">🏆</span>Trophées</button>
+      <div class="divider"></div>
+      <button class="nav-item" onclick="showMain('settings')" id="nav-settings"><span class="icon">⚙️</span>Paramètres</button>
+      <div class="sidebar-bottom">
+        <div class="user-info">
+          <div class="avatar" id="sidebarAvatar">A</div>
+          <div><div class="user-name" id="sidebarName">Ahmed</div><div class="user-role">Compte personnel</div></div>
+        </div>
+        <button class="nav-item" onclick="logout()" style="margin-top:8px"><span class="icon">🚪</span>Déconnexion</button>
+      </div>
+    </div>
+    <div class="main-content">
+
+      <!-- DASHBOARD -->
+      <div class="main-page active" id="dashboardPage">
+        <div class="topbar">
+          <div>
+            <div style="font-size:13px;color:var(--text2);margin-bottom:4px">Bonjour 👋</div>
+            <h2 id="welcomeName">Ahmed</h2>
+          </div>
+          <div class="topbar-right">
+            <div class="points-badge">🏆 <span id="pointsDisplay">0</span> pts</div>
+            <div class="month-nav">
+              <button class="month-btn" onclick="prevMonth()">‹</button>
+              <div class="month-label" id="currentMonthLabel">Avril 2026</div>
+              <button class="month-btn" onclick="nextMonth()">›</button>
+            </div>
+            <select class="currency-select" id="currencySelect" onchange="changeCurrency(this.value)">
+              <option value="MAD">🇲🇦 MAD</option>
+              <option value="EUR">🇪🇺 EUR</option>
+              <option value="USD">🇺🇸 USD</option>
+              <option value="GBP">🇬🇧 GBP</option>
+            </select>
+          </div>
+        </div>
+        <div class="alerts-container" id="alertsContainer"></div>
+        <div class="stats-grid">
+          <div class="stat-card income"><div class="stat-label">Revenu mensuel</div><div class="stat-value income" id="incomeDisplay">0 MAD</div><div class="stat-sub">Ce mois</div></div>
+          <div class="stat-card expense"><div class="stat-label">Total dépenses</div><div class="stat-value expense" id="totalDisplay">0 MAD</div><div class="stat-sub">Ce mois</div></div>
+          <div class="stat-card balance"><div class="stat-label">Solde restant</div><div class="stat-value" id="balanceDisplay" style="color:var(--accent2)">0 MAD</div><div class="stat-sub" id="balanceSub">Budget disponible</div></div>
+          <div class="stat-card savings"><div class="stat-label">Taux d'épargne</div><div class="stat-value" id="savingsRateDisplay" style="color:var(--amber)">0%</div><div class="stat-sub">Du revenu</div></div>
+        </div>
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-header"><div class="card-title">📊 Dépenses par catégorie</div></div>
+            <div class="chart-wrap"><canvas id="doughnutChart"></canvas></div>
+          </div>
+          <div class="card">
+            <div class="card-header"><div class="card-title">📅 Évolution mensuelle</div></div>
+            <div class="chart-wrap"><canvas id="lineChart"></canvas></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><div class="card-title">🕒 Dernières dépenses</div><button class="btn btn-ghost" style="font-size:13px;padding:8px 16px" onclick="showMain('expenses')">Voir tout</button></div>
+          <div id="recentExpenses"></div>
+        </div>
+      </div>
+
+      <!-- EXPENSES -->
+      <div class="main-page" id="expensesPage">
+        <div class="topbar"><h2>💸 Dépenses</h2><button class="btn btn-primary" onclick="openAddModal()">+ Ajouter</button></div>
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-header"><div class="card-title">Revenu mensuel</div></div>
+            <div class="salary-input-wrap">
+              <input type="number" id="salaryInput" placeholder="Ex: 15000" style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px 16px;color:var(--text);font-size:15px">
+              <button class="btn btn-primary" onclick="setSalary()" style="white-space:nowrap">Enregistrer</button>
+            </div>
+            <div style="font-size:13px;color:var(--text2);margin-top:8px">Revenu actuel : <span id="currentSalary" style="color:var(--green);font-weight:600">Non défini</span></div>
+          </div>
+          <div class="card">
+            <div class="card-header"><div class="card-title">Résumé rapide</div></div>
+            <div style="display:flex;gap:24px">
+              <div><div style="font-size:13px;color:var(--text2)">Ce mois</div><div style="font-size:22px;font-weight:700;color:var(--red)" id="expSummaryTotal">0</div></div>
+              <div><div style="font-size:13px;color:var(--text2)">Transactions</div><div style="font-size:22px;font-weight:700" id="expSummaryCount">0</div></div>
+              <div><div style="font-size:13px;color:var(--text2)">Catégories</div><div style="font-size:22px;font-weight:700;color:var(--accent2)" id="expSummaryCats">0</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><div class="card-title">Toutes les dépenses</div>
+            <div style="display:flex;gap:8px">
+              <select id="filterCat" onchange="renderExpenseList()" style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:8px 12px;color:var(--text);font-size:13px">
+                <option value="">Toutes les catégories</option>
+              </select>
+            </div>
+          </div>
+          <div id="fullExpenseList"></div>
+        </div>
+      </div>
+
+      <!-- BUDGET -->
+      <div class="main-page" id="budgetPage">
+        <div class="topbar"><h2>🎯 Budget par catégorie</h2><button class="btn btn-primary" onclick="openBudgetModal()">+ Définir budget</button></div>
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-header"><div class="card-title">Limite totale restante</div></div>
+            <div style="font-size:36px;font-weight:800;font-family:'Syne',sans-serif" id="budgetTotal">— MAD</div>
+            <div style="font-size:13px;color:var(--text2);margin-top:4px">Sur budget total défini</div>
+          </div>
+          <div class="card">
+            <div class="card-header"><div class="card-title">🔮 Prédiction fin de mois</div></div>
+            <div style="font-size:22px;font-weight:700;color:var(--amber)" id="predictedTotal">— MAD</div>
+            <div style="font-size:13px;color:var(--text2);margin-top:4px" id="predictedNote">Basé sur vos habitudes</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><div class="card-title">Suivi par catégorie</div></div>
+          <div id="budgetBars"></div>
+        </div>
+      </div>
+
+      <!-- ANALYTICS -->
+      <div class="main-page" id="analyticsPage">
+        <div class="topbar"><h2>📈 Analyses</h2></div>
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-header"><div class="card-title">Répartition dépenses</div></div>
+            <div class="chart-wrap"><canvas id="analyticsBar"></canvas></div>
+          </div>
+          <div class="card">
+            <div class="card-header"><div class="card-title">Revenus vs Dépenses</div></div>
+            <div class="chart-wrap"><canvas id="analyticsCompare"></canvas></div>
+          </div>
+        </div>
+        <div id="insightsContainer"></div>
+      </div>
+
+      <!-- SAVINGS -->
+      <div class="main-page" id="savingsPage">
+        <div class="topbar"><h2>🏦 Épargne</h2></div>
+        <div class="stats-grid">
+          <div class="stat-card savings"><div class="stat-label">Épargne ce mois</div><div class="stat-value" id="savingsAmount" style="color:var(--amber)">0 MAD</div></div>
+          <div class="stat-card income"><div class="stat-label">Taux d'épargne</div><div class="stat-value income" id="savingsRate2">0%</div></div>
+          <div class="stat-card balance"><div class="stat-label">Objectif mensuel</div><div class="stat-value" style="color:var(--accent2)" id="savingsGoalDisplay">Non défini</div></div>
+        </div>
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-header"><div class="card-title">Définir objectif d'épargne</div></div>
+            <div class="form-group"><label>Objectif mensuel</label><input type="number" id="savingsGoalInput" placeholder="Ex: 3000" style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px 16px;color:var(--text);font-size:15px;width:100%"></div>
+            <button class="btn btn-primary" onclick="setSavingsGoal()">Enregistrer objectif</button>
+          </div>
+          <div class="card">
+            <div class="card-header"><div class="card-title">Conseils d'épargne</div></div>
+            <div id="savingsTips"></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><div class="card-title">📊 Évolution de l'épargne</div></div>
+          <div class="chart-wrap"><canvas id="savingsChart"></canvas></div>
+        </div>
+      </div>
+
+      <!-- TROPHIES -->
+      <div class="main-page" id="trophiesPage">
+        <div class="topbar"><h2>🏆 Trophées & Points</h2></div>
+        <div class="stats-grid">
+          <div class="stat-card"><div class="stat-label">Points totaux</div><div class="stat-value" style="color:var(--amber);font-family:'Syne',sans-serif;font-size:32px" id="totalPoints">0</div></div>
+          <div class="stat-card"><div class="stat-label">Trophées gagnés</div><div class="stat-value" id="trophiesEarned">0/8</div></div>
+          <div class="stat-card"><div class="stat-label">Niveau</div><div class="stat-value" id="userLevel" style="color:var(--accent2)">Débutant</div></div>
+        </div>
+        <div class="card">
+          <div class="card-header"><div class="card-title">Vos trophées</div></div>
+          <div class="trophy-grid" id="trophyGrid"></div>
+        </div>
+      </div>
+
+      <!-- SETTINGS -->
+      <div class="main-page" id="settingsPage">
+        <div class="topbar"><h2>⚙️ Paramètres</h2></div>
+        <div class="card">
+          <div class="settings-section">
+            <h3>Compte</h3>
+            <div class="setting-row"><div class="setting-info"><h4>Nom</h4><p id="settingName">Ahmed Benali</p></div><button class="btn btn-ghost" style="font-size:13px;padding:8px 16px">Modifier</button></div>
+            <div class="setting-row"><div class="setting-info"><h4>Devise par défaut</h4><p>Moroccan Dirham (MAD)</p></div><select class="currency-select" onchange="changeCurrency(this.value)" style="background:var(--bg3)"><option value="MAD">MAD</option><option value="EUR">EUR</option><option value="USD">USD</option><option value="GBP">GBP</option></select></div>
+          </div>
+          <div class="settings-section">
+            <h3>Catégories personnalisées</h3>
+            <div style="display:flex;gap:12px;margin-bottom:16px">
+              <input type="text" id="newCatName" placeholder="Nom de catégorie" style="flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 14px;color:var(--text)">
+              <input type="text" id="newCatEmoji" placeholder="🏷️" style="width:60px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 14px;color:var(--text);text-align:center">
+              <button class="btn btn-primary" onclick="addCustomCategory()">Ajouter</button>
+            </div>
+            <div id="categoryList"></div>
+          </div>
+          <div class="settings-section">
+            <h3>Notifications</h3>
+            <div class="setting-row"><div class="setting-info"><h4>Alertes budget</h4><p>Recevoir des alertes à 80% du budget</p></div><div class="toggle on" id="toggleAlerts" onclick="this.classList.toggle('on')"></div></div>
+            <div class="setting-row"><div class="setting-info"><h4>Résumé mensuel</h4><p>Rapport mensuel automatique</p></div><div class="toggle" id="toggleMonthly" onclick="this.classList.toggle('on')"></div></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ADD EXPENSE MODAL -->
+<div class="modal-bg" id="addModal">
+  <div class="modal">
+    <h3>➕ Ajouter une dépense</h3>
+    <div class="form-group"><label>MONTANT</label><input type="number" id="modalAmount" placeholder="0.00" step="0.01"></div>
+    <div class="form-group"><label>CATÉGORIE</label>
+      <select id="modalCategory">
+        <option value="">Choisir une catégorie</option>
+      </select>
+    </div>
+    <div class="form-group"><label>DATE</label><input type="date" id="modalDate"></div>
+    <div class="form-group"><label>DESCRIPTION</label><textarea id="modalDesc" placeholder="Optionnel…"></textarea></div>
+    <div class="modal-actions">
+      <button class="btn btn-primary" style="flex:1" onclick="addExpense()">Ajouter</button>
+      <button class="btn btn-secondary" onclick="closeModal('addModal')">Annuler</button>
+    </div>
+  </div>
+</div>
+
+<!-- BUDGET MODAL -->
+<div class="modal-bg" id="budgetModal">
+  <div class="modal">
+    <h3>🎯 Définir un budget</h3>
+    <div class="form-group"><label>CATÉGORIE</label>
+      <select id="budgetModalCat"><option value="">Choisir une catégorie</option></select>
+    </div>
+    <div class="form-group"><label>LIMITE MENSUELLE</label><input type="number" id="budgetModalAmount" placeholder="0.00"></div>
+    <div class="modal-actions">
+      <button class="btn btn-primary" style="flex:1" onclick="saveBudget()">Enregistrer</button>
+      <button class="btn btn-secondary" onclick="closeModal('budgetModal')">Annuler</button>
+    </div>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
