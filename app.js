@@ -693,18 +693,90 @@ function renderCategoryList() {
 }
 
 // ── Restore session on page load ──────────────
-(async function init() {
-  const token   = sessionStorage.getItem('fintrack_token');
-  const userStr = sessionStorage.getItem('fintrack_user');
+function showForgot() {
+  showPage('forgotPage');
+  document.getElementById('forgotEmail').value = '';
+  document.getElementById('forgotMsg').style.display = 'none';
+}
 
-  if (token && userStr) {
+async function doForgot() {
+  const email = document.getElementById('forgotEmail').value.trim();
+  const msg   = document.getElementById('forgotMsg');
+  const btn   = document.getElementById('forgotBtn');
+  if (!email) { showMsg(msg, 'Entrez votre email', 'red'); return; }
+
+  btn.disabled    = true;
+  btn.textContent = '…';
+
+  try {
+    await api.post('/auth/forgot-password', { email });
+    showMsg(msg, '✅ Email envoyé ! Vérifiez votre boîte mail (et vos spams).', 'green');
+  } catch (err) {
+    showMsg(msg, err.message, 'red');
+  } finally {
+    btn.disabled    = false;
+    btn.textContent = 'Envoyer le lien';
+  }
+}
+
+async function doReset() {
+  const token    = new URLSearchParams(window.location.search).get('token');
+  const password = document.getElementById('resetPassword').value;
+  const confirm  = document.getElementById('resetConfirm').value;
+  const msg      = document.getElementById('resetMsg');
+  const btn      = document.getElementById('resetBtn');
+
+  if (!password || !confirm) { showMsg(msg, 'Remplissez les deux champs', 'red'); return; }
+  if (password !== confirm)  { showMsg(msg, 'Les mots de passe ne correspondent pas', 'red'); return; }
+  if (password.length < 6)   { showMsg(msg, 'Minimum 6 caractères', 'red'); return; }
+  if (!token)                { showMsg(msg, 'Token manquant — utilisez le lien reçu par email', 'red'); return; }
+
+  btn.disabled    = true;
+  btn.textContent = '…';
+
+  try {
+    await api.post('/auth/reset-password', { token, password });
+    showMsg(msg, '✅ Mot de passe mis à jour ! Vous pouvez vous connecter.', 'green');
+    setTimeout(() => {
+      window.history.replaceState({}, '', '/');
+      showAuth('login');
+    }, 2500);
+  } catch (err) {
+    showMsg(msg, err.message, 'red');
+  } finally {
+    btn.disabled    = false;
+    btn.textContent = 'Mettre à jour';
+  }
+}
+
+// Helper to show colored messages
+function showMsg(el, text, color) {
+  el.textContent   = text;
+  el.style.color   = color === 'green' ? 'var(--green)' : '#ff6b6b';
+  el.style.display = 'block';
+}
+
+// ── ALSO UPDATE your init function at the bottom of app.js ───
+// Replace the existing (async function init() { ... })() with this:
+
+(async function init() {
+  // Check if this is a password reset link
+  const token = new URLSearchParams(window.location.search).get('token');
+  if (token) {
+    showPage('resetPage');
+    return;
+  }
+
+  // Normal session restore
+  const sessionToken = sessionStorage.getItem('fintrack_token');
+  const userStr      = sessionStorage.getItem('fintrack_user');
+  if (sessionToken && userStr) {
     try {
       currentUser = JSON.parse(userStr);
       await loadUserData();
       enterApp();
       return;
     } catch {
-      // Token expired or invalid — fall through to landing
       api.token = null;
       sessionStorage.removeItem('fintrack_user');
     }

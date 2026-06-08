@@ -58,11 +58,60 @@
       </div>
       <div class="form-group"><label>EMAIL</label><input type="email" id="authEmail" placeholder="vous@email.com"></div>
       <div class="form-group"><label>MOT DE PASSE</label><input type="password" id="authPassword" placeholder="••••••••"></div>
+      <div id="forgotLink" style="text-align:right;margin-top:-12px;margin-bottom:16px">
+        <a onclick="showForgot()" style="font-size:13px;color:var(--accent2);cursor:pointer">
+          Mot de passe oublié ?
+        </a>
+      </div>
       <button class="btn btn-primary btn-full" onclick="doAuth()" id="authBtn">Se connecter</button>
       <div class="auth-switch" id="authSwitch">Pas encore de compte ? <a onclick="toggleAuth()">S'inscrire</a></div>
     </div>
   </div>
 </div>
+<div id="forgotPage" class="page">
+        <div class="auth-page">
+          <div class="auth-card">
+            <span class="logo">FinTrack</span>
+            <h2>Mot de passe oublié 🔑</h2>
+            <p class="subtitle">Entrez votre email et on vous envoie un lien</p>
+            <div class="form-group">
+              <label>EMAIL</label>
+              <input type="email" id="forgotEmail" placeholder="vous@email.com">
+            </div>
+            <div id="forgotMsg" style="margin-bottom:16px;font-size:14px;display:none"></div>
+            <button class="btn btn-primary btn-full" onclick="doForgot()" id="forgotBtn">
+              Envoyer le lien
+            </button>
+            <div class="auth-switch">
+              <a onclick="showAuth('login')">← Retour à la connexion</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="resetPage" class="page">
+        <div class="auth-page">
+          <div class="auth-card">
+            <span class="logo">FinTrack</span>
+            <h2>Nouveau mot de passe 🔒</h2>
+            <p class="subtitle">Choisissez un nouveau mot de passe</p>
+            <div class="form-group">
+              <label>NOUVEAU MOT DE PASSE</label>
+              <input type="password" id="resetPassword" placeholder="••••••••">
+            </div>
+            <div class="form-group">
+              <label>CONFIRMER LE MOT DE PASSE</label>
+              <input type="password" id="resetConfirm" placeholder="••••••••">
+            </div>
+            <div id="resetMsg" style="margin-bottom:16px;font-size:14px;display:none"></div>
+            <button class="btn btn-primary btn-full" onclick="doReset()" id="resetBtn">
+              Mettre à jour
+            </button>
+            <div class="auth-switch">
+              <a onclick="showAuth('login')">← Retour à la connexion</a>
+            </div>
+          </div>
+        </div>
+      </div>
 
 <!-- APP -->
 <div id="appPage" class="page">
